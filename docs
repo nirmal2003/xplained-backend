@@ -1,0 +1,24 @@
+field types:
+    1 - Person
+    2 - Date
+    3 - Select
+
+    4 - String
+
+
+colors:
+    #fcba03
+    #91ff00
+    #00ffa6
+    #0099ff
+    #001eff
+    #7300ff
+    #ff0011
+    #ff005d
+    #4c386b
+
+
+priority:
+    1 - High
+    2 - Medium
+    3 - Low
