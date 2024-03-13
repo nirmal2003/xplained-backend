@@ -1,4 +1,4 @@
-package com.xplained.main.models.objects.animations;
+package com.xplained.main.models.objects.animations.controllers;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,19 +15,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table
-public class Animation {
+public class AnimationController {
     @Id
     @GeneratedValue
     private Long id;
-    private Long objectId;
+    private Long animationId;
     private Long modelId;
     private Integer type;
-    private Double start;
-    private Double finish;
-    private Double angle;
-    private Double duration;
-    private Double xAxis;
-    private Double yAxis;
+    private Integer controller;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp

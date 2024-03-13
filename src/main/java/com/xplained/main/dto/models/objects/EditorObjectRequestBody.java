@@ -13,4 +13,5 @@ public class EditorObjectRequestBody {
     private Double left;
     private Double angle;
     private Double radius;
+    private Boolean isFrozen;
 }

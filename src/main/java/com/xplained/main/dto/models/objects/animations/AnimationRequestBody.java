@@ -8,4 +8,7 @@ public class AnimationRequestBody {
     private Double start;
     private Double end;
     private Double duration;
+    private Double angle;
+    private Double xAxis;
+    private Double yAxis;
 }

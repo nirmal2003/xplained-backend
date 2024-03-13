@@ -22,5 +22,6 @@ public class EditorObjectResponse {
     private Double xAxis;
     private Double angle;
     private Double radius;
+    private Boolean isFrozen;
     private LocalDateTime createdAt;
 }

@@ -12,7 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Service
@@ -24,14 +26,7 @@ public class EditorObjectService {
 
 
     public List<EditorObjectResponse> getAllObjects(Long modelId) {
-        try {
-            return editorObjectRepository.findAllByModelIdOrderByCreatedAt(modelId);
-        } catch (Exception e) {
-            System.out.println("\n");
-            System.out.println(e);
-            System.out.println("\n");
-            return null;
-        }
+        return editorObjectRepository.findAllByModelIdOrderByCreatedAt(modelId);
     }
 
     public EditorObjectResponse createObject(Long modelId, EditorObjectRequestBody requestBody) {
@@ -52,6 +47,7 @@ public class EditorObjectService {
                 .angle(0.0)
                 .shape(requestBody.getShape())
                 .radius(ThreadLocalRandom.current().nextDouble(50, 60))
+                .isFrozen(true)
                 .build());
 
         return EditorObjectResponse.builder()
@@ -65,6 +61,7 @@ public class EditorObjectService {
                 .angle(object.getAngle())
                 .shape(object.getShape())
                 .radius(object.getRadius())
+                .isFrozen(object.getIsFrozen())
                 .createdAt(object.getCreatedAt())
                 .build();
     }
@@ -81,8 +78,19 @@ public class EditorObjectService {
         if (requestBody.getLeft() != null) object.setXAxis(requestBody.getLeft());
         if (requestBody.getAngle() != null) object.setAngle(requestBody.getAngle());
         if (requestBody.getRadius() != null) object.setRadius(requestBody.getRadius());
+        if (requestBody.getIsFrozen() != null) object.setIsFrozen(requestBody.getIsFrozen());
 
         editorObjectRepository.save(object);
+    }
+
+    public void groupObject(List<Long> objects) {
+        List<EditorObject> objectList = new ArrayList<>();
+
+        for (Long objectId : objects) {
+            Optional<EditorObject> editorObject = editorObjectRepository.findById(objectId);
+
+            editorObject.ifPresent(objectList::add);
+        }
     }
 
     public void deleteObject(Long id) {

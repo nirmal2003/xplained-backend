@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -29,6 +30,11 @@ public class EditorObject {
     private Double xAxis;
     private Double angle;
     private Double radius;
+    private Boolean isFrozen;
+//    private Boolean isGroup;
+
+//    @ElementCollection
+//    private List<Long> objects;
 
     private Long userId;
     private Long modelId;

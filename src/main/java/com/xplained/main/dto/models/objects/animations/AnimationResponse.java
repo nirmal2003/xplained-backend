@@ -13,9 +13,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class AnimationResponse {
     private Long id;
+    private Long objectId;
     private Integer type;
     private Double start;
     private Double end;
     private Double duration;
+    private Double angle;
+    private Double left;
+    private Double top;
     private LocalDateTime createdAt;
 }
