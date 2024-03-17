@@ -28,6 +28,7 @@ public class Animation {
     private Double duration;
     private Double xAxis;
     private Double yAxis;
+    private Integer loopCount;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp

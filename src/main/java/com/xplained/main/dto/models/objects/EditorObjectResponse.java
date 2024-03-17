@@ -23,5 +23,16 @@ public class EditorObjectResponse {
     private Double angle;
     private Double radius;
     private Boolean isFrozen;
+
+    // forces
+    private Double velocityX;
+    private Double velocityY;
+    private Double friction;
+    private Double frictionAir;
+    private Double restitution;
+    private Double density;
+    private Double mass;
+    private Double inertia;
+
     private LocalDateTime createdAt;
 }

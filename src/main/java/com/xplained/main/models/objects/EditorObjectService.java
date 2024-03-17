@@ -48,6 +48,13 @@ public class EditorObjectService {
                 .shape(requestBody.getShape())
                 .radius(ThreadLocalRandom.current().nextDouble(50, 60))
                 .isFrozen(true)
+                .velocityX(0.0)
+                .velocityY(0.0)
+                .friction(0.1)
+                .frictionAir(0.01)
+                .restitution(0.0)
+                .density(0.001)
+                .mass(1.0)
                 .build());
 
         return EditorObjectResponse.builder()
@@ -62,6 +69,14 @@ public class EditorObjectService {
                 .shape(object.getShape())
                 .radius(object.getRadius())
                 .isFrozen(object.getIsFrozen())
+                .velocityX(object.getVelocityX())
+                .velocityY(object.getVelocityY())
+                .friction(object.getFriction())
+                .frictionAir(object.getFrictionAir())
+                .restitution(object.getRestitution())
+                .density(object.getDensity())
+                .mass(object.getMass())
+                .inertia(object.getInertia())
                 .createdAt(object.getCreatedAt())
                 .build();
     }
@@ -69,7 +84,7 @@ public class EditorObjectService {
     public void updateObject(Long id, EditorObjectRequestBody requestBody) {
         EditorObject object = editorObjectRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Object not found"));
 
-        if (requestBody.getName()!= null) object.setName(requestBody.getName());
+        if (requestBody.getName() != null) object.setName(requestBody.getName());
         if (requestBody.getShape() != null) object.setShape(requestBody.getShape());
         if (requestBody.getFill() != null) object.setFill(requestBody.getFill());
         if (requestBody.getWidth() != null) object.setWidth(requestBody.getWidth());
@@ -79,6 +94,16 @@ public class EditorObjectService {
         if (requestBody.getAngle() != null) object.setAngle(requestBody.getAngle());
         if (requestBody.getRadius() != null) object.setRadius(requestBody.getRadius());
         if (requestBody.getIsFrozen() != null) object.setIsFrozen(requestBody.getIsFrozen());
+
+        // forces
+        if (requestBody.getVelocityX() != null) object.setVelocityX(requestBody.getVelocityX());
+        if (requestBody.getVelocityY() != null) object.setVelocityY(requestBody.getVelocityY());
+        if (requestBody.getFriction() != null) object.setFriction(requestBody.getFriction());
+        if (requestBody.getFrictionAir() != null) object.setFrictionAir(requestBody.getFrictionAir());
+        if (requestBody.getRestitution() != null) object.setRestitution(requestBody.getRestitution());
+        if (requestBody.getDensity() != null) object.setDensity(requestBody.getDensity());
+        if (requestBody.getMass() != null) object.setMass(requestBody.getMass());
+        if (requestBody.getInertia() != null) object.setInertia(requestBody.getInertia());
 
         editorObjectRepository.save(object);
     }

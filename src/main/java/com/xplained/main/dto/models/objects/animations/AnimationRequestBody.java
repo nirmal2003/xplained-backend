@@ -11,4 +11,5 @@ public class AnimationRequestBody {
     private Double angle;
     private Double xAxis;
     private Double yAxis;
+    private Integer loopCount;
 }

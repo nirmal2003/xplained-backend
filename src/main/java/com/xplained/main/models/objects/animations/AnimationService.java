@@ -48,6 +48,7 @@ public class AnimationService {
                 .angle(requestBody.getAngle())
                 .xAxis(requestBody.getXAxis())
                 .yAxis(requestBody.getYAxis())
+                .loopCount(requestBody.getLoopCount())
                 .build());
 
         return AnimationResponse.builder()
@@ -61,6 +62,7 @@ public class AnimationService {
                 .createdAt(animation.getCreatedAt())
                 .left(animation.getXAxis())
                 .top(animation.getYAxis())
+                .loopCount(animation.getLoopCount())
                 .build();
     }
 
@@ -70,9 +72,6 @@ public class AnimationService {
         Animation animation = animationRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Animation not found"));
         EditorObject object = editorObjectRepository.findById(animation.getObjectId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Object not found"));
 
-
-        System.out.println(user);
-        System.out.println(object);
 
         if (!object.getUserId().equals(user.getId()))
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Permission denied");
@@ -84,6 +83,7 @@ public class AnimationService {
         if (requestBody.getAngle() != null) animation.setAngle(requestBody.getAngle());
         if (requestBody.getXAxis() != null) animation.setXAxis(requestBody.getXAxis());
         if (requestBody.getYAxis() != null) animation.setYAxis(requestBody.getYAxis());
+        if (requestBody.getLoopCount() != null) animation.setLoopCount(requestBody.getLoopCount());
 
         animationRepository.save(animation);
     }

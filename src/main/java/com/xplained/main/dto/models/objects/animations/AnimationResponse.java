@@ -21,5 +21,6 @@ public class AnimationResponse {
     private Double angle;
     private Double left;
     private Double top;
+    private Integer loopCount;
     private LocalDateTime createdAt;
 }
