@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 public class ModelRequestBody {
-    @NotEmpty
     private String title;
+    private Double gravity;
 }

@@ -46,10 +46,6 @@ public class AuthFilter extends OncePerRequestFilter {
                 }
             }
 
-            System.out.println("\n");
-            System.out.println(jwt);
-            System.out.println("\n");
-
             if (jwt == null) {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
             }

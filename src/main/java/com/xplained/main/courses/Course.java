@@ -24,6 +24,7 @@ public class Course {
 
     private String title;
     private String heading;
+    private String image;
 
     @Column(columnDefinition = "TEXT")
     private String description;

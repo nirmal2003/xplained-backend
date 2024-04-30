@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class AnimationResponse {
     private Long id;
+    private String name;
     private Long objectId;
     private Integer type;
     private Double start;

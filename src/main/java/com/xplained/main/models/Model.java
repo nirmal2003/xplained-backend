@@ -24,6 +24,9 @@ public class Model {
 
     private String title;
 
+    // settings
+    private Double gravity;
+
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
     private LocalDateTime createdAt;

@@ -14,6 +14,6 @@ public interface ModelRepository extends JpaRepository<Model, Long> {
 
     Boolean existsByIdAndUserId(Long id, Long userId);
 
-    @Query("SELECT new com.xplained.main.dto.models.ModelResponse(m.id, m.title, m.createdAt) FROM Model m WHERE m.userId = :userId ORDER BY m.createdAt DESC")
+    @Query("SELECT new com.xplained.main.dto.models.ModelResponse(m.id, m.title, m.gravity, m.createdAt) FROM Model m WHERE m.userId = :userId ORDER BY m.createdAt DESC")
     List<ModelResponse> findAllByUserIdOrderByCreatedAtDesc(@Param("userId") Long userId, Pageable pageable);
 }

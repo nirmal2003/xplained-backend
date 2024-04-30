@@ -14,5 +14,6 @@ import java.time.LocalDateTime;
 public class ModelResponse {
     private Long id;
     private String title;
+    private Double gravity;
     private LocalDateTime createdAt;
 }

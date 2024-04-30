@@ -20,6 +20,11 @@ public class ModelController {
         return modelService.getAllModels(page);
     }
 
+    @GetMapping("/{id}")
+    public ModelResponse getModelDetails(@PathVariable Long id) {
+        return modelService.getModelDetails(id);
+    }
+
     @PostMapping
     public ModelResponse createModel(@Valid @RequestBody ModelRequestBody requestBody) {
         return modelService.createModel(requestBody);
@@ -27,7 +32,7 @@ public class ModelController {
 
     @PutMapping("/{id}")
     public void renameModel(@PathVariable Long id, @Valid @RequestBody ModelRequestBody requestBody) {
-        modelService.renameModel(id, requestBody);
+        modelService.updateModel(id, requestBody);
     }
 
     @DeleteMapping("/{id}")

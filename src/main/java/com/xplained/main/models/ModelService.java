@@ -4,6 +4,7 @@ import com.xplained.main.auth.AuthService;
 import com.xplained.main.dto.models.ModelRequestBody;
 import com.xplained.main.dto.models.ModelResponse;
 import com.xplained.main.dto.user.UserDTO;
+import com.xplained.main.models.objects.EditorObjectRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -18,8 +19,9 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class ModelService {
-    private final ModelRepository modelRepository;
     private final AuthService authService;
+    private final ModelRepository modelRepository;
+    private final EditorObjectRepository editorObjectRepository;
 
 
     public List<ModelResponse> getAllModels(Integer page) {
@@ -36,6 +38,7 @@ public class ModelService {
         Model model = modelRepository.saveAndFlush(Model.builder()
                 .userId(user.getId())
                 .title(requestBody.getTitle())
+                .gravity(1.0)
                 .build());
 
         return ModelResponse.builder()
@@ -45,12 +48,26 @@ public class ModelService {
                 .build();
     }
 
-    public void renameModel(Long id, ModelRequestBody requestBody) {
+    public ModelResponse getModelDetails(Long id) {
+        Model model = modelRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Model not found"));
+
+        return ModelResponse.builder()
+                .id(model.getId())
+                .title(model.getTitle())
+                .gravity(model.getGravity())
+                .createdAt(model.getCreatedAt())
+                .build();
+    }
+
+    public void updateModel(Long id, ModelRequestBody requestBody) {
+        System.out.println(requestBody);
         UserDTO user = authService.getCurrentUser();
 
         Model model = modelRepository.findByIdAndUserId(id, user.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Model not found"));
 
-        model.setTitle(requestBody.getTitle());
+        if (requestBody.getTitle() != null) model.setTitle(requestBody.getTitle());
+        if (requestBody.getGravity() != null) model.setGravity(requestBody.getGravity());
+
 
         modelRepository.save(model);
     }
@@ -59,6 +76,8 @@ public class ModelService {
         UserDTO user = authService.getCurrentUser();
 
         Model model = modelRepository.findByIdAndUserId(id, user.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Model not found"));
+
+        editorObjectRepository.deleteByModelId(model.getId());
 
         modelRepository.delete(model);
     }

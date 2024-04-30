@@ -39,6 +39,7 @@ public class AnimationService {
         EditorObject object = editorObjectRepository.findById(shapeId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Object not found"));
 
         Animation animation = animationRepository.saveAndFlush(Animation.builder()
+                .name("Animation " + animationRepository.countByModelId(object.getModelId()).intValue() + 1)
                 .objectId(object.getId())
                 .modelId(object.getModelId())
                 .type(requestBody.getType())
@@ -53,6 +54,7 @@ public class AnimationService {
 
         return AnimationResponse.builder()
                 .id(animation.getId())
+                .name(animation.getName())
                 .objectId(animation.getObjectId())
                 .type(animation.getType())
                 .start(animation.getStart())
@@ -76,6 +78,8 @@ public class AnimationService {
         if (!object.getUserId().equals(user.getId()))
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Permission denied");
 
+
+        if (requestBody.getName() != null) animation.setName(requestBody.getName());
         if (requestBody.getType() != null) animation.setType(requestBody.getType());
         if (requestBody.getStart() != null) animation.setStart(requestBody.getStart());
         if (requestBody.getEnd() != null) animation.setFinish(requestBody.getEnd());

@@ -14,4 +14,11 @@ public class UserDTO {
     private String email;
     private String username;
     private String image;
+    private String description;
+    private String heading;
+
+    private String linkedin;
+    private String youtube;
+    private String web;
+    private String otherUrl;
 }

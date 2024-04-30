@@ -1,6 +1,5 @@
 package com.xplained.main.user.bio;
 
-import com.xplained.main.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +25,4 @@ public class UserBio {
     private String youtube;
     private String web;
     private String otherUrl;
-
-    @OneToOne(mappedBy = "bio")
-    private User user;
 }

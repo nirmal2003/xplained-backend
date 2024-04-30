@@ -22,3 +22,15 @@ priority:
     1 - High
     2 - Medium
     3 - Low
+
+
+
+forces: {
+    velocity_x: 1,
+    velocity_y: 2,
+    friction: 3,
+    friction_static: 4,
+    friction_air: 5,
+    restitution: 6,
+    mass: 7
+}

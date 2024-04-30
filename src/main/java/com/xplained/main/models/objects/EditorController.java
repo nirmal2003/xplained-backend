@@ -16,9 +16,14 @@ public class EditorController {
 
 
 
-    @GetMapping("/{modelId}")
+    @GetMapping("/models/{modelId}")
     public List<EditorObjectResponse> getAllModels(@PathVariable Long modelId) {
         return editorObjectService.getAllObjects(modelId);
+    }
+
+    @GetMapping("/{id}")
+    public EditorObjectResponse getObjectDetails(@PathVariable Long id) {
+        return editorObjectService.getObjectDetails(id);
     }
 
     @PostMapping("/{modelId}")

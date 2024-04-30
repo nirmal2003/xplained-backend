@@ -19,6 +19,7 @@ public class Animation {
     @Id
     @GeneratedValue
     private Long id;
+    private String name;
     private Long objectId;
     private Long modelId;
     private Integer type;
