@@ -30,9 +30,9 @@ public class CourseModuleService {
 
     public List<CourseModuleResponse> getAllModules(Long courseId) {
 
-        checkCourseCreator(courseId);
+        if (!courseRepository.existsById(courseId)) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "course not found");
 
-        Pageable pageable = PageRequest.of(1, 20);
+        Pageable pageable = PageRequest.of(0, 20);
         return courseModuleRepository.findAllByCourseId(courseId, pageable);
     }
 

@@ -34,3 +34,8 @@ forces: {
     restitution: 6,
     mass: 7
 }
+
+// courses
+lesson_resources_types:
+    video - 1
+    slider - 2

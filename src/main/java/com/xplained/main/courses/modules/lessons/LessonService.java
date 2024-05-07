@@ -33,11 +33,20 @@ public class LessonService {
         return lessonRepository.findAllByModuleId(moduleId);
     }
 
+    public Lesson getLesson(Long id) {
+        Lesson lesson = lessonRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "lesson not found"));
+
+//        checkModuleCreator(lesson.getModuleId());
+
+        return lesson;
+    }
+
     public Lesson createLesson(Long moduleId) {
         checkModuleCreator(moduleId);
 
         Lesson lesson = Lesson.builder()
                 .name("lesson " + lessonRepository.countByModuleId(moduleId))
+                .moduleId(moduleId)
                 .index(lessonRepository.countByModuleId(moduleId).intValue())
                 .build();
 

@@ -26,8 +26,21 @@ public class Course {
     private String heading;
     private String image;
 
+    private Boolean isPrivate;
+    private Boolean isPublished;
+    private Boolean isActive;
+
+    @Column(columnDefinition = "TEXT")
+    private String shortDescription;
+
     @Column(columnDefinition = "TEXT")
     private String description;
+
+    @Column(columnDefinition = "TEXT")
+    private String requirements;
+
+    @Column(columnDefinition = "TEXT")
+    private String learners;
 
     private Long numberOfLessons;
     private Long numberOfModels;

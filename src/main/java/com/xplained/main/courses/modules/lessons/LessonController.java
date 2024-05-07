@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/cources/modules/lessons")
+@RequestMapping("/api/courses/modules/lessons")
 @RequiredArgsConstructor
 public class LessonController {
     private final LessonService lessonService;
@@ -16,6 +16,11 @@ public class LessonController {
     @GetMapping("/{moduleId}")
     public List<Lesson> getLessons(@PathVariable Long moduleId) {
         return lessonService.getLessons(moduleId);
+    }
+
+    @GetMapping("/details/{id}")
+    public Lesson getLesson(@PathVariable Long id) {
+        return lessonService.getLesson(id);
     }
 
     @PostMapping("/{moduleId}")
