@@ -1,6 +1,7 @@
 package com.xplained.main.courses;
 
 import com.xplained.main.dto.courses.CourseResponse;
+import com.xplained.main.dto.courses.CourseSearchResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,6 +15,9 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
     @Query("SELECT new com.xplained.main.dto.courses.CourseResponse(c.id, c.title, c.isPrivate, c.isPublished, c.isActive) FROM Course c WHERE c.userId = :userId ORDER BY c.createdAt")
     List<CourseResponse> findAllByUserId(@Param("userId") Long userId);
+
+    @Query("SELECT new com.xplained.main.dto.courses.CourseSearchResponse(c.id, c.title, c.image) FROM Course c WHERE LOWER(c.title) LIKE %:title% ORDER BY c.createdAt")
+    List<CourseSearchResponse> searchCourseByTitle(@Param("title") String title);
 
     Optional<Course> findByIdAndUserId(Long id, Long userId);
 

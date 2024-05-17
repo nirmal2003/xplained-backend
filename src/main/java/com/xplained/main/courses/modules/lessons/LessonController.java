@@ -23,6 +23,11 @@ public class LessonController {
         return lessonService.getLesson(id);
     }
 
+    @GetMapping("/count/{moduleId}")
+    public Long getNumberOfLessons(@PathVariable Long moduleId) {
+        return lessonService.getNumberOfLessons(moduleId);
+    }
+
     @PostMapping("/{moduleId}")
     public Lesson createLesson(@PathVariable Long moduleId) {
         return lessonService.createLesson(moduleId);

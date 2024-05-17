@@ -1,7 +1,10 @@
 package com.xplained.main.courses.enrolled;
 
+import com.xplained.main.dto.courses.enrolled.EnrolledCourseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/courses/enroll")
@@ -13,6 +16,11 @@ public class EnrolledCourseController {
     @GetMapping("/{courseId}")
     public Boolean isCourseEnrolled(@PathVariable Long courseId) {
         return enrolledCourseService.isCourseEnrolled(courseId);
+    }
+
+    @GetMapping
+    public List<EnrolledCourseResponse> getEnrolledCourses() {
+        return enrolledCourseService.getEnrolledCourses();
     }
 
     @PostMapping("/{courseId}")

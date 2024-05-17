@@ -18,6 +18,11 @@ public class LessonResourcesController {
         return lessonResourcesService.getAllResources(lessonId);
     }
 
+    @GetMapping("/details/{resourcesId}")
+    public LessonResources getResources(@PathVariable Long resourcesId) {
+        return lessonResourcesService.getResources(resourcesId);
+    }
+
     @PostMapping("/{lessonId}")
     public LessonResources createResources(@PathVariable Long lessonId, @RequestBody LessonResourcesRequestBody requestBody) {
         return lessonResourcesService.createResources(lessonId, requestBody);

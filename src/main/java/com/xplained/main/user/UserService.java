@@ -18,6 +18,10 @@ public class UserService {
     private final UserBioRepository userBioRepository;
 
 
+    public Boolean checkUserStatus() {
+        return true;
+    }
+
     public UserDTO userDetails() {
         UserDTO userDTO = authService.getCurrentUser();
 

@@ -25,6 +25,7 @@ public class Course {
     private String title;
     private String heading;
     private String image;
+    private Long video;
 
     private Boolean isPrivate;
     private Boolean isPublished;

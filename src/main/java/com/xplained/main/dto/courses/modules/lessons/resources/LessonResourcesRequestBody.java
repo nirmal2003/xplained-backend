@@ -6,6 +6,6 @@ import lombok.Data;
 public class LessonResourcesRequestBody {
     private String name;
     private Integer type;
-    private String videoUrl;
+    private Long video;
     private Long sliderId;
 }

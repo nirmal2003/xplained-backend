@@ -41,6 +41,10 @@ public class LessonService {
         return lesson;
     }
 
+    public Long getNumberOfLessons(Long moduleId) {
+        return lessonRepository.countByModuleId(moduleId);
+    }
+
     public Lesson createLesson(Long moduleId) {
         checkModuleCreator(moduleId);
 

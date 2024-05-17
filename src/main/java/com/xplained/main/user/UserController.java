@@ -17,6 +17,11 @@ public class UserController {
         return userService.userDetails();
     }
 
+    @GetMapping("/status")
+    public Boolean checkUserStatus() {
+        return userService.checkUserStatus();
+    }
+
     @PutMapping
     public void updateUser(@RequestBody UserRequestBody requestBody) {
         userService.updateUser(requestBody);

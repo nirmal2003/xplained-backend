@@ -2,6 +2,7 @@ package com.xplained.main.courses.modules.lessons.resources;
 
 import com.xplained.main.auth.AuthService;
 import com.xplained.main.courses.CourseRepository;
+import com.xplained.main.courses.enrolled.EnrolledCourseRepository;
 import com.xplained.main.courses.modules.CourseModule;
 import com.xplained.main.courses.modules.CourseModuleRepository;
 import com.xplained.main.courses.modules.lessons.Lesson;
@@ -23,6 +24,7 @@ public class LessonResourcesService {
     private final CourseModuleRepository moduleRepository;
     private final CourseRepository courseRepository;
     private final AuthService authService;
+    private final EnrolledCourseRepository enrolledCourseRepository;
 
 
     private void checkCourseCreator(Long lessonId) {
@@ -36,11 +38,39 @@ public class LessonResourcesService {
     }
 
     public List<LessonResources> getAllResources(Long lessonId) {
-//        checkCourseCreator(lessonId);
 
-        if (lessonRepository.existsById(lessonId)) throw  new ResponseStatusException(HttpStatus.NOT_FOUND, "lesson not found");
 
-        return lessonResourcesRepository.findAllByLessonIdOrderByCreatedAtAsc(lessonId);
+        Lesson lesson = lessonRepository.findById(lessonId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "lesson not found"));
+
+        CourseModule module = moduleRepository.findById(lesson.getModuleId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "module not found"));
+
+        UserDTO user = authService.getCurrentUser();
+
+
+        if (enrolledCourseRepository.existsByCourseIdAndUserId(module.getCourseId(), user.getId()) || courseRepository.existsByIdAndUserId(module.getCourseId(), user.getId())) {
+
+            return lessonResourcesRepository.findAllByLessonIdOrderByCreatedAtAsc(lessonId);
+        }
+
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "resources not found");
+    }
+
+    public LessonResources getResources(Long resourcesId) {
+        LessonResources resources = lessonResourcesRepository.findById(resourcesId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "resources not found"));
+
+
+        Lesson lesson = lessonRepository.findById(resources.getLessonId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "lesson not found"));
+
+        CourseModule module = moduleRepository.findById(lesson.getModuleId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "module not found"));
+
+        UserDTO user = authService.getCurrentUser();
+
+
+        if (enrolledCourseRepository.existsByCourseIdAndUserId(module.getCourseId(), user.getId()) || courseRepository.existsByIdAndUserId(module.getCourseId(), user.getId())) {
+            return resources;
+        }
+
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "resources not found");
     }
 
     public LessonResources createResources(Long lessonId, LessonResourcesRequestBody requestBody) {
@@ -51,7 +81,7 @@ public class LessonResourcesService {
                 .type(requestBody.getType())
                 .name("Untitled " + lessonResourcesRepository.countByLessonId(lessonId))
                 .sliderId(requestBody.getSliderId())
-                .videoUrl(requestBody.getVideoUrl())
+                .video(requestBody.getVideo())
                 .build();
 
 //        if (requestBody.getType() == 1) {

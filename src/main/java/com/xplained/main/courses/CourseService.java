@@ -1,8 +1,10 @@
 package com.xplained.main.courses;
 
 import com.xplained.main.auth.AuthService;
+import com.xplained.main.courses.resources.videos.VideoRepository;
 import com.xplained.main.dto.courses.CourseRequestBody;
 import com.xplained.main.dto.courses.CourseResponse;
+import com.xplained.main.dto.courses.CourseSearchResponse;
 import com.xplained.main.dto.user.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,12 +18,17 @@ import java.util.List;
 public class CourseService {
     private final AuthService authService;
     private final CourseRepository courseRepository;
+    private final VideoRepository videoRepository;
 
 
     public List<CourseResponse> getAllCourses() {
         UserDTO user = authService.getCurrentUser();
 
         return courseRepository.findAllByUserId(user.getId());
+    }
+
+    public List<CourseSearchResponse> searchCourses(String title) {
+        return courseRepository.searchCourseByTitle(title.toLowerCase());
     }
 
     public Course getCourseDetails(Long id) {
@@ -53,6 +60,12 @@ public class CourseService {
         if (requestBody.getRequirements() != null) course.setRequirements(requestBody.getRequirements());
         if (requestBody.getLearners() != null) course.setLearners(requestBody.getLearners());
         if (requestBody.getIsPrivate() != null) course.setIsPrivate(requestBody.getIsPrivate());
+
+        if (requestBody.getVideo() != null && videoRepository.existsById(requestBody.getVideo())) {
+            course.setVideo(requestBody.getVideo());
+        }
+
+        if (requestBody.getImage() != null) course.setImage(requestBody.getImage());
 
         courseRepository.save(course);
     }
