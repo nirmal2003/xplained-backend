@@ -1,4 +1,4 @@
-package com.xplained.main.courses.modules.lessons.resources;
+package com.xplained.main.exams.questions;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,16 +15,16 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table
-public class LessonResources {
+public class Question {
     @Id
     @GeneratedValue
     private Long id;
-    private Long lessonId;
-    private Integer type;
-    private Long video;
-    private String name;
-    private Long sliderId;
     private Long examId;
+
+    @Column(columnDefinition = "TEXT")
+    private String question;
+    private Integer type;
+    private Integer index;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp

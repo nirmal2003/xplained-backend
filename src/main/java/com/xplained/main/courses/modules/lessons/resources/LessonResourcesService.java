@@ -82,6 +82,7 @@ public class LessonResourcesService {
                 .name("Untitled " + lessonResourcesRepository.countByLessonId(lessonId))
                 .sliderId(requestBody.getSliderId())
                 .video(requestBody.getVideo())
+                .examId(requestBody.getExamId())
                 .build();
 
 //        if (requestBody.getType() == 1) {

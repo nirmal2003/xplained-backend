@@ -17,7 +17,7 @@ public class ExamService {
     private final AuthService authService;
 
 
-    public List<ExamResponse> getAllExams() {
+    public List<ExamResponse> getAllExamsByCreator() {
         return examRepository.findAllByUserIdOrderByCreatedAtDesc(authService.getCurrentUser().getId());
     }
 

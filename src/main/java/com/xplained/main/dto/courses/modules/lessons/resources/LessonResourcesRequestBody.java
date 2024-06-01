@@ -8,4 +8,5 @@ public class LessonResourcesRequestBody {
     private Integer type;
     private Long video;
     private Long sliderId;
+    private Long examId;
 }

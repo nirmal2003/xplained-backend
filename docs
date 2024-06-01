@@ -39,3 +39,9 @@ forces: {
 lesson_resources_types:
     video - 1
     slider - 2
+
+
+question types:
+    MULTIPLE CHOICES - 1
+    TEXT - 2
+    FILES - 3 [don't implemented]

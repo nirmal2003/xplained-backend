@@ -15,8 +15,8 @@ public class ExamController {
 
 
     @GetMapping
-    public List<ExamResponse> getAllExams() {
-        return examService.getAllExams();
+    public List<ExamResponse> getAllExamsByCreator() {
+        return examService.getAllExamsByCreator();
     }
 
     @PostMapping
