@@ -21,6 +21,8 @@ public class UserExam {
     private Long id;
     private Long examId;
     private Long userId;
+    private Integer nextIndex;
+    private Float duration;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp

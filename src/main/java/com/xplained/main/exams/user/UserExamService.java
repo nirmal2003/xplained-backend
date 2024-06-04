@@ -1,6 +1,8 @@
 package com.xplained.main.exams.user;
 
 import com.xplained.main.auth.AuthService;
+import com.xplained.main.dto.exams.user.UserExamRequestBody;
+import com.xplained.main.exams.Exam;
 import com.xplained.main.exams.ExamRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,14 +33,25 @@ public class UserExamService {
     }
 
     public UserExam createUserExam(Long examId) {
-        if (!examRepository.existsById(examId)) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "exam not found");
+        Exam exam = examRepository.findById(examId).orElseThrow(() ->  new ResponseStatusException(HttpStatus.NOT_FOUND, "exam not found"));
 
         UserExam userExam = UserExam.builder()
                 .examId(examId)
                 .userId(authService.getCurrentUser().getId())
+                .nextIndex(0)
+                .duration(exam.getDuration())
                 .build();
 
         return userExamRepository.saveAndFlush(userExam);
+    }
+
+    public void updateUserExam(Long examId, UserExamRequestBody requestBody) {
+        UserExam exam = userExamRepository.findByUserIdAndExamId(authService.getCurrentUser().getId(), examId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "exam not found"));
+
+        if (requestBody.getDuration() != null) exam.setDuration(requestBody.getDuration());
+        if (requestBody.getNextIndex() != null) exam.setNextIndex(requestBody.getNextIndex());
+
+        userExamRepository.save(exam);
     }
 
     public void deleteUserExam(Long examId) {

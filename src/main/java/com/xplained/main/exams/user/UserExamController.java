@@ -1,5 +1,6 @@
 package com.xplained.main.exams.user;
 
+import com.xplained.main.dto.exams.user.UserExamRequestBody;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,11 @@ public class UserExamController {
     @PostMapping("/{examId}")
     public UserExam createUserExam(@PathVariable Long examId) {
         return userExamService.createUserExam(examId);
+    }
+
+    @PutMapping("/{examId}")
+    public void updateUserExam(@PathVariable Long examId, @RequestBody UserExamRequestBody requestBody) {
+        userExamService.updateUserExam(examId, requestBody);
     }
 
     @DeleteMapping("/{examId}")

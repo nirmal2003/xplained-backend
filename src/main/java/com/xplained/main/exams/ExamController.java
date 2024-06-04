@@ -19,10 +19,16 @@ public class ExamController {
         return examService.getAllExamsByCreator();
     }
 
+    @GetMapping("/{id}")
+    public ExamResponse getExamDetails(@PathVariable Long id) {
+        return examService.getExamDetails(id);
+    }
+
     @PostMapping
     public ExamResponse createExam() {
         return examService.createExam();
     }
+
 
     @PutMapping("/{id}")
     public void updateExam(@PathVariable Long id, @RequestBody ExamRequestBody requestBody) {

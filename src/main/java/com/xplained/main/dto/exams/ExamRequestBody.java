@@ -6,4 +6,6 @@ import lombok.Data;
 public class ExamRequestBody {
     private String title;
     private String image;
+    private Boolean isTextEnabled;
+    private Float duration;
 }

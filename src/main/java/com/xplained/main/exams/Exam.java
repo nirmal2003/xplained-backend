@@ -22,6 +22,8 @@ public class Exam {
     private Long userId;
     private String title;
     private String image;
+    private Boolean isTextEnabled;
+    private Float duration;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp

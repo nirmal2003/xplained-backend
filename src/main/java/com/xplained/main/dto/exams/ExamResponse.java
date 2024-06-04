@@ -15,5 +15,7 @@ public class ExamResponse {
     private Long id;
     private String title;
     private String image;
+    private Boolean isTextEnabled;
+    private Float duration;
     private LocalDateTime createdAt;
 }
