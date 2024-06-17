@@ -7,12 +7,25 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
-    @Query("SELECT new com.xplained.main.dto.exams.question.QuestionResponse(q.id, q.question, q.type, q.createdAt) FROM Question q WHERE q.examId = :examId ORDER BY q.index ASC")
-    List<QuestionResponse> findAllByExamId(@Param("examId") Long examId);
+    @Query("SELECT q.id FROM Question q WHERE q.examId = :examId ORDER BY q.index ASC")
+    List<Long> findAllByExamId(@Param("examId") Long examId);
+
+    @Query("SELECT q.id FROM Question q WHERE q.examId = :examId AND q.type = 1 ORDER BY q.index ASC")
+    List<Long> findAllMcqByExamId(@Param("examId") Long examId);
+
+    Optional<Question> findByExamIdAndIndex(Long examId, Integer index);
+
+    Long countByExamIdAndType(Long examId, Integer type);
 
     Long countByExamId(Long examId);
+
+    @Query("SELECT q.id FROM Question q WHERE q.examId = :examId AND q.type = :type")
+    List<Long> findAllIds(@Param("examId") Long examId, @Param("type") Integer type);
+
+    void deleteByExamIdAndType(Long examId, Integer type);
 }

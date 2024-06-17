@@ -25,6 +25,7 @@ public class Question {
     private String question;
     private Integer type;
     private Integer index;
+    private Integer realIndex;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp

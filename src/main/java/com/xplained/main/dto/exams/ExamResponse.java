@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 @Data
@@ -16,6 +17,7 @@ public class ExamResponse {
     private String title;
     private String image;
     private Boolean isTextEnabled;
-    private Float duration;
+    private BigInteger duration;
+    private Boolean isPublished;
     private LocalDateTime createdAt;
 }

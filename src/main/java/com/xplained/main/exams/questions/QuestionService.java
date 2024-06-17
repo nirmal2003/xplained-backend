@@ -1,10 +1,14 @@
 package com.xplained.main.exams.questions;
 
+import com.xplained.main.auth.AuthService;
 import com.xplained.main.dto.exams.question.IdAndIndex;
 import com.xplained.main.dto.exams.question.IdAndIndexRequestBody;
 import com.xplained.main.dto.exams.question.QuestionRequestBody;
 import com.xplained.main.dto.exams.question.QuestionResponse;
+import com.xplained.main.exams.Exam;
 import com.xplained.main.exams.ExamRepository;
+import com.xplained.main.exams.user.UserExam;
+import com.xplained.main.exams.user.UserExamRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -18,13 +22,59 @@ import java.util.Optional;
 public class QuestionService {
     private final QuestionRepository questionRepository;
     private final ExamRepository examRepository;
+    private final UserExamRepository userExamRepository;
+    private final AuthService authService;
 
 
     private void checkPermission() {
     }
 
-    public List<QuestionResponse> getAllQuestions(Long examId) {
-        return questionRepository.findAllByExamId(examId);
+    public List<Long> getAllQuestions(Long examId) {
+
+        Exam exam = examRepository.findById(examId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "exam not found"));
+
+        if (exam.getIsTextEnabled()) return questionRepository.findAllByExamId(examId);
+        else return questionRepository.findAllMcqByExamId(examId);
+    }
+
+    public QuestionResponse getQuestionByIndex(Long questionId) {
+//        UserExam userExam = userExamRepository.findById(userExamId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "exam not found"));
+//
+//        System.out.println("\n");
+//        System.out.println("index " + userExam.getNextIndex());
+//        System.out.println("\n");
+
+        Question question = questionRepository.findById(questionId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "question not found"));
+
+        Optional<UserExam> userExam = userExamRepository.findByUserIdAndExamId(authService.getCurrentUser().getId(), question.getExamId());
+
+        userExam.ifPresent(value -> {
+            value.setCurrentIndex(question.getIndex());
+
+            userExamRepository.save(value);
+        });
+
+        return QuestionResponse.builder()
+                .id(question.getId())
+                .question(question.getQuestion())
+                .type(question.getType())
+                .index(question.getRealIndex())
+                .createdAt(question.getCreatedAt())
+                .build();
+    }
+
+    public List<Long> getAllQuestionUserSide(Long examId) {
+        Exam exam = examRepository.findById(examId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "exam not found"));
+
+        if (exam.getIsTextEnabled()) return questionRepository.findAllByExamId(examId);
+        else return questionRepository.findAllMcqByExamId(examId);
+    }
+
+    public Long getQuestionCountUserSide(Long examId) {
+        Exam exam = examRepository.findById(examId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "exam not found"));
+
+        if (exam.getIsTextEnabled()) return questionRepository.countByExamId(examId);
+        else return questionRepository.countByExamIdAndType(examId, 1);
     }
 
     public QuestionResponse createQuestion(Long examId) {
@@ -36,12 +86,14 @@ public class QuestionService {
                 .type(1)
                 .question("")
                 .index(questionRepository.countByExamId(examId).intValue())
+                .realIndex(questionRepository.countByExamId(examId).intValue() + 1)
                 .build());
 
         return QuestionResponse.builder()
                 .id(question.getId())
                 .question(question.getQuestion())
                 .type(question.getType())
+                .index(question.getRealIndex())
                 .createdAt(question.getCreatedAt())
                 .build();
     }
@@ -56,8 +108,8 @@ public class QuestionService {
         questionRepository.save(question);
     }
 
-    public void changeQuestionIndex(IdAndIndexRequestBody requestBody) {
-        requestBody.getData().forEach(_data -> {
+    public void changeQuestionIndex(List<IdAndIndex> requestBody) {
+        requestBody.forEach(_data -> {
             Optional<Question> question = questionRepository.findById(((IdAndIndex) _data).getId());
 
             question.ifPresent(_question -> {

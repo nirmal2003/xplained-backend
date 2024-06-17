@@ -61,11 +61,16 @@ public class AuthFilter extends OncePerRequestFilter {
                 }
             }
 
+//            Thread.sleep((long) (3 * 1000));
+
             filterChain.doFilter(request, response);
         } catch (ServletException | IOException e) {
             System.out.println(e);
 //            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
             return;
         }
+//        catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 }

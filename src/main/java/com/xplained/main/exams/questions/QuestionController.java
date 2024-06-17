@@ -1,5 +1,6 @@
 package com.xplained.main.exams.questions;
 
+import com.xplained.main.dto.exams.question.IdAndIndex;
 import com.xplained.main.dto.exams.question.IdAndIndexRequestBody;
 import com.xplained.main.dto.exams.question.QuestionRequestBody;
 import com.xplained.main.dto.exams.question.QuestionResponse;
@@ -16,8 +17,23 @@ public class QuestionController {
 
 
     @GetMapping("/{examId}")
-    public List<QuestionResponse> getAllQuestions(@PathVariable Long examId) {
+    public List<Long> getAllQuestions(@PathVariable Long examId) {
         return questionService.getAllQuestions(examId);
+    }
+
+    @GetMapping("/details/{questionId}")
+    public QuestionResponse getQuestionByIndex(@PathVariable Long questionId) {
+        return questionService.getQuestionByIndex(questionId);
+    }
+
+    @GetMapping("/user/{examId}")
+    public List<Long> getAllQuestionUserSide(@PathVariable Long examId) {
+        return questionService.getAllQuestionUserSide(examId);
+    }
+
+    @GetMapping("/user/count/{examId}")
+    public Long getQuestionCountUserSide(@PathVariable Long examId) {
+        return questionService.getQuestionCountUserSide(examId);
     }
 
     @PostMapping("/{examId}")
@@ -31,7 +47,7 @@ public class QuestionController {
     }
 
     @PutMapping("/index")
-    public void changeQuestionIndex(@RequestBody IdAndIndexRequestBody requestBody) {
+    public void changeQuestionIndex(@RequestBody List<IdAndIndex> requestBody) {
         questionService.changeQuestionIndex(requestBody);
     }
 

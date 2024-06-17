@@ -22,6 +22,7 @@ public class Choice {
     private Long questionId;
     private String text;
     private Integer index;
+    private Boolean isAnswer;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp

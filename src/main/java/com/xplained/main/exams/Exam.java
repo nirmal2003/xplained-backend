@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 @Data
@@ -23,7 +24,9 @@ public class Exam {
     private String title;
     private String image;
     private Boolean isTextEnabled;
-    private Float duration;
+    private BigInteger duration;
+
+    private Boolean isPublished;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp

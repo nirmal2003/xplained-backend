@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface ExamRepository extends JpaRepository<Exam, Long> {
     Long countByUserId(Long userId);
 
-    @Query("SELECT new com.xplained.main.dto.exams.ExamResponse(e.id, e.title, e.image, e.isTextEnabled, e.duration, e.createdAt) FROM Exam e WHERE e.userId = :userId ORDER BY e.createdAt DESC")
+    @Query("SELECT new com.xplained.main.dto.exams.ExamResponse(e.id, e.title, e.image, e.isTextEnabled, e.duration, e.isPublished, e.createdAt) FROM Exam e WHERE e.userId = :userId ORDER BY e.createdAt DESC")
     List<ExamResponse> findAllByUserIdOrderByCreatedAtDesc(@Param("userId") Long userId);
 
     Optional<Exam> findByIdAndUserId(Long id, Long userId);

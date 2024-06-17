@@ -3,18 +3,23 @@ package com.xplained.main.exams;
 import com.xplained.main.auth.AuthService;
 import com.xplained.main.dto.exams.ExamRequestBody;
 import com.xplained.main.dto.exams.ExamResponse;
+import com.xplained.main.exams.questions.QuestionRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigInteger;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ExamService {
     private final ExamRepository examRepository;
     private final AuthService authService;
+    private final QuestionRepository questionRepository;
 
 
     public List<ExamResponse> getAllExamsByCreator() {
@@ -30,6 +35,7 @@ public class ExamService {
                 .image(exam.getImage())
                 .isTextEnabled(exam.getIsTextEnabled())
                 .duration(exam.getDuration())
+                .isPublished(exam.getIsPublished())
                 .createdAt(exam.getCreatedAt())
                 .build();
     }
@@ -39,14 +45,16 @@ public class ExamService {
                 .userId(authService.getCurrentUser().getId())
                 .title("Untitled " + examRepository.countByUserId(authService.getCurrentUser().getId()).intValue())
                 .image("")
-                        .isTextEnabled(false)
-                        .duration(1F)
+                .isTextEnabled(false)
+                .duration(BigInteger.valueOf(60 * 60 * 1000))
+                .isPublished(false)
                 .build());
 
         return ExamResponse.builder()
                 .id(exam.getId())
                 .title(exam.getTitle())
                 .image(exam.getImage())
+                .isPublished(exam.getIsPublished())
                 .createdAt(exam.getCreatedAt())
                 .build();
     }
@@ -58,6 +66,12 @@ public class ExamService {
         if (requestBody.getImage() != null) exam.setImage(requestBody.getImage());
         if (requestBody.getIsTextEnabled() != null) exam.setIsTextEnabled(requestBody.getIsTextEnabled());
         if (requestBody.getDuration() != null) exam.setDuration(requestBody.getDuration());
+        if (requestBody.getIsPublished() != null) {
+            if (requestBody.getIsPublished()) {
+                questionRepository.deleteByExamIdAndType(exam.getId(), 2);
+            }
+            exam.setIsPublished(requestBody.getIsPublished());
+        }
 
         examRepository.save(exam);
     }

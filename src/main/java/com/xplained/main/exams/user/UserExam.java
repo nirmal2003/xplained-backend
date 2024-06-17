@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 @Data
@@ -21,8 +22,8 @@ public class UserExam {
     private Long id;
     private Long examId;
     private Long userId;
-    private Integer nextIndex;
-    private Float duration;
+    private Integer currentIndex;
+    private BigInteger duration;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp

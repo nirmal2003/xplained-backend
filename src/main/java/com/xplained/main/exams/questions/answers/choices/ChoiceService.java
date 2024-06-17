@@ -28,6 +28,7 @@ public class ChoiceService {
                 .questionId(questionId)
                 .text("")
                 .index(choiceRepository.countByQuestionId(questionId).intValue())
+                .isAnswer(false)
                 .build();
 
         return choiceRepository.saveAndFlush(choice);
@@ -37,6 +38,7 @@ public class ChoiceService {
         Choice choice = choiceRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "choice not found"));
 
         if (requestBody.getText() != null) choice.setText(requestBody.getText());
+        if (requestBody.getIsAnswer() != null) choice.setIsAnswer(requestBody.getIsAnswer());
 
         choiceRepository.save(choice);
     }
