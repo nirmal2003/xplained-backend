@@ -67,7 +67,7 @@ public class ExamService {
         if (requestBody.getIsTextEnabled() != null) exam.setIsTextEnabled(requestBody.getIsTextEnabled());
         if (requestBody.getDuration() != null) exam.setDuration(requestBody.getDuration());
         if (requestBody.getIsPublished() != null) {
-            if (requestBody.getIsPublished()) {
+            if (requestBody.getIsPublished() && !exam.getIsTextEnabled()) {
                 questionRepository.deleteByExamIdAndType(exam.getId(), 2);
             }
             exam.setIsPublished(requestBody.getIsPublished());

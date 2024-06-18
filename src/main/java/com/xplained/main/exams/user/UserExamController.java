@@ -48,4 +48,9 @@ public class UserExamController {
     public void updateNextIndex(@PathVariable Long examId) {
         userExamService.updateNextIndex(examId);
     }
+
+    @GetMapping("/status/{examId}")
+    public List<Long> isExamCompleted(@PathVariable Long examId) {
+        return userExamService.unAnsweredQuestions(examId);
+    }
 }

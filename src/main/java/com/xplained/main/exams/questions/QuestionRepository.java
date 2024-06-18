@@ -28,4 +28,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     List<Long> findAllIds(@Param("examId") Long examId, @Param("type") Integer type);
 
     void deleteByExamIdAndType(Long examId, Integer type);
+
+//    @Query("SELECT q.id FROM Question q JOIN UserAnswer a ON a.questionId = q.")
+//    List<Long> getUnAnsweredQuestions(@Param("examId") Long examId);
 }

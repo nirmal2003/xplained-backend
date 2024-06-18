@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -106,5 +107,20 @@ public class UserExamService {
         userExam.setCurrentIndex(userExam.getCurrentIndex());
 
         userExamRepository.save(userExam);
+    }
+
+    public List<Long> unAnsweredQuestions(Long examId) {
+
+        if (!userExamRepository.existsByUserIdAndExamId(authService.getCurrentUser().getId(), examId)) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "exam not found");
+
+        List<Long> questions = questionRepository.findAllByExamId(examId);
+
+        List<Long> unanswered = new ArrayList<>();
+
+        questions.forEach(id -> {
+            if (!userAnswerRepository.existsByQuestionId(id)) unanswered.add(id);
+        });
+
+        return unanswered;
     }
 }

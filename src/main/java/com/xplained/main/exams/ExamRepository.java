@@ -17,4 +17,5 @@ public interface ExamRepository extends JpaRepository<Exam, Long> {
     List<ExamResponse> findAllByUserIdOrderByCreatedAtDesc(@Param("userId") Long userId);
 
     Optional<Exam> findByIdAndUserId(Long id, Long userId);
+    Boolean existsByIdAndUserId(Long id, Long userId);
 }

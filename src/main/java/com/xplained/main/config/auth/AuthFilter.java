@@ -61,7 +61,7 @@ public class AuthFilter extends OncePerRequestFilter {
                 }
             }
 
-//            Thread.sleep((long) (3 * 1000));
+//            Thread.sleep((long) 1000);
 
             filterChain.doFilter(request, response);
         } catch (ServletException | IOException e) {
