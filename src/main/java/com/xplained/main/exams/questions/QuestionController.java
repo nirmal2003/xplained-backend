@@ -1,9 +1,6 @@
 package com.xplained.main.exams.questions;
 
-import com.xplained.main.dto.exams.question.IdAndIndex;
-import com.xplained.main.dto.exams.question.IdAndIndexRequestBody;
-import com.xplained.main.dto.exams.question.QuestionRequestBody;
-import com.xplained.main.dto.exams.question.QuestionResponse;
+import com.xplained.main.dto.exams.question.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,5 +51,10 @@ public class QuestionController {
     @DeleteMapping("/{id}")
     public void deleteQuestion(@PathVariable Long id) {
         questionService.deleteQuestion(id);
+    }
+
+    @GetMapping("/admin/{examId}")
+    public List<QuestionAdminResponse> getAllQuestionsInAdmin(@PathVariable Long examId) {
+        return questionService.getAllQuestionsInAdmin(examId);
     }
 }

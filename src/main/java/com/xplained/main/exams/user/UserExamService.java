@@ -1,7 +1,9 @@
 package com.xplained.main.exams.user;
 
 import com.xplained.main.auth.AuthService;
+import com.xplained.main.dto.exams.user.UserExamAdminResponse;
 import com.xplained.main.dto.exams.user.UserExamRequestBody;
+import com.xplained.main.dto.exams.user.UserExamResponse;
 import com.xplained.main.dto.exams.user.UserResults;
 import com.xplained.main.exams.Exam;
 import com.xplained.main.exams.ExamRepository;
@@ -32,7 +34,7 @@ public class UserExamService {
     private final UserAnswerRepository userAnswerRepository;
 
 
-    public List<UserExam> getAllUserExam() {
+    public List<UserExamResponse> getAllUserExam() {
         return userExamRepository.findAllByUserIdOrderByCreatedAtDesc(authService.getCurrentUser().getId());
     }
 
@@ -122,5 +124,9 @@ public class UserExamService {
         });
 
         return unanswered;
+    }
+
+    public List<UserExamAdminResponse> getAllExamsInAdmin(Long examId) {
+        return userExamRepository.getAllExamsByAdmin(examId);
     }
 }

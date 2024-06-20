@@ -20,6 +20,10 @@ public class UserAnswerService {
         return userAnswerRepository.findByUserExamIdAndQuestionId(userExamId, questionId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "answer not found"));
     }
 
+    public UserAnswer getAnswerDetailsInAdmin(Long questionId) {
+        return userAnswerRepository.findByQuestionId(questionId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "answer not found"));
+    }
+
     public void changeAnswer(Long userExamId, Long questionId, UserAnswerRequestBody requestBody) {
         Optional<UserAnswer> answer = userAnswerRepository.findByUserExamIdAndQuestionId(userExamId, questionId);
 
@@ -29,6 +33,7 @@ public class UserAnswerService {
                 .userExamId(userExamId)
                 .questionId(questionId)
                 .type(requestBody.getType())
+                .isReviewed(false)
                 .build()));
 
 //        if (answer.isPresent()) {
@@ -45,5 +50,17 @@ public class UserAnswerService {
         else if (_answer.getType() == 2) _answer.setTextAnswer(requestBody.getTextAnswer());
 
         userAnswerRepository.save(_answer);
+    }
+
+    public void reviewAnswer(Long id, UserAnswerRequestBody requestBody) {
+        UserAnswer answer = userAnswerRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "answer not found"));
+
+        if (!answer.getIsReviewed()) {
+            answer.setIsReviewed(true);
+        }
+
+        answer.setIsCorrect(requestBody.getIsCorrect());
+
+        userAnswerRepository.save(answer);
     }
 }

@@ -26,6 +26,7 @@ public class Question {
     private Integer type;
     private Integer index;
     private Integer realIndex;
+    private Float marks;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp

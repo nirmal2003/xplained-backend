@@ -1,5 +1,6 @@
 package com.xplained.main.exams.questions;
 
+import com.xplained.main.dto.exams.question.QuestionAdminResponse;
 import com.xplained.main.dto.exams.question.QuestionResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -28,6 +29,9 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     List<Long> findAllIds(@Param("examId") Long examId, @Param("type") Integer type);
 
     void deleteByExamIdAndType(Long examId, Integer type);
+
+    @Query("SELECT new com.xplained.main.dto.exams.question.QuestionAdminResponse(q.id, a.textAnswer) FROM Question q JOIN UserAnswer a ON a.questionId = q.id WHERE q.examId = :examId ORDER BY q.createdAt ASC")
+    List<QuestionAdminResponse> getAllByExamId(@Param("examId") Long examId);
 
 //    @Query("SELECT q.id FROM Question q JOIN UserAnswer a ON a.questionId = q.")
 //    List<Long> getUnAnsweredQuestions(@Param("examId") Long examId);

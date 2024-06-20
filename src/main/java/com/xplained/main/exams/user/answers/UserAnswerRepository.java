@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public interface UserAnswerRepository extends JpaRepository<UserAnswer, Long> {
     Optional<UserAnswer> findByUserExamIdAndQuestionId(Long userExamId, Long questionId);
+    Optional<UserAnswer> findByQuestionId(Long questionId);
 
     List<UserAnswer> findAllByQuestionIdAndType(Long questionId, Integer type);
 

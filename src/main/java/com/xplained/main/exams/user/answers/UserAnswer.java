@@ -24,6 +24,8 @@ public class UserAnswer {
     private Integer type;
     private String textAnswer;
     private Long mcqAnswer;
+    private Boolean isCorrect;
+    private Boolean isReviewed;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp

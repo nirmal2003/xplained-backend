@@ -16,8 +16,18 @@ public class UserAnswerController {
         return userAnswerService.getAnswerDetails(userExamId, questionId);
     }
 
+    @GetMapping("/{questionId}")
+    public UserAnswer getAnswerDetailsInAdmin(@PathVariable Long questionId) {
+        return userAnswerService.getAnswerDetailsInAdmin(questionId);
+    }
+
     @PutMapping("/{userExamId}/{questionId}")
     public void changeAnswer(@PathVariable Long userExamId, @PathVariable Long questionId, @RequestBody UserAnswerRequestBody requestBody) {
         userAnswerService.changeAnswer(userExamId, questionId, requestBody);
+    }
+
+    @PutMapping("/admin/review/{id}")
+    public void reviewAnswer(@PathVariable Long id, @RequestBody UserAnswerRequestBody requestBody) {
+        userAnswerService.reviewAnswer(id, requestBody);
     }
 }

@@ -1,10 +1,7 @@
 package com.xplained.main.exams.questions;
 
 import com.xplained.main.auth.AuthService;
-import com.xplained.main.dto.exams.question.IdAndIndex;
-import com.xplained.main.dto.exams.question.IdAndIndexRequestBody;
-import com.xplained.main.dto.exams.question.QuestionRequestBody;
-import com.xplained.main.dto.exams.question.QuestionResponse;
+import com.xplained.main.dto.exams.question.*;
 import com.xplained.main.exams.Exam;
 import com.xplained.main.exams.ExamRepository;
 import com.xplained.main.exams.user.UserExam;
@@ -104,6 +101,7 @@ public class QuestionService {
         if (requestBody.getQuestion() != null) question.setQuestion(requestBody.getQuestion());
         if (requestBody.getType() != null) question.setType(requestBody.getType());
         if (requestBody.getIndex() != null) question.setIndex(requestBody.getIndex());
+        if (requestBody.getMarks() != null) question.setMarks(requestBody.getMarks());
 
         questionRepository.save(question);
     }
@@ -122,5 +120,9 @@ public class QuestionService {
 
     public void deleteQuestion(Long id) {
         questionRepository.deleteById(id);
+    }
+
+    public List<QuestionAdminResponse> getAllQuestionsInAdmin(Long examId) {
+        return questionRepository.getAllByExamId(examId);
     }
 }
