@@ -1,9 +1,6 @@
 package com.xplained.main.exams.user;
 
-import com.xplained.main.dto.exams.user.UserExamAdminResponse;
-import com.xplained.main.dto.exams.user.UserExamRequestBody;
-import com.xplained.main.dto.exams.user.UserExamResponse;
-import com.xplained.main.dto.exams.user.UserResults;
+import com.xplained.main.dto.exams.user.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -59,5 +56,10 @@ public class UserExamController {
     @GetMapping("/admin/{examId}")
     public List<UserExamAdminResponse> getAllExamsInAdmin(@PathVariable Long examId) {
         return userExamService.getAllExamsInAdmin(examId);
+    }
+
+    @GetMapping("/results-summary/{examId}")
+    public ExamResultsResponse getUserExamResults(@PathVariable Long examId) {
+        return userExamService.getUserExamResults(examId);
     }
 }

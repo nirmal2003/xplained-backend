@@ -6,6 +6,7 @@ import com.xplained.main.exams.Exam;
 import com.xplained.main.exams.ExamRepository;
 import com.xplained.main.exams.user.UserExam;
 import com.xplained.main.exams.user.UserExamRepository;
+import com.xplained.main.exams.user.UserExamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class QuestionService {
     private final ExamRepository examRepository;
     private final UserExamRepository userExamRepository;
     private final AuthService authService;
+    private final UserExamService userExamService;
 
 
     private void checkPermission() {
@@ -44,6 +46,8 @@ public class QuestionService {
         Question question = questionRepository.findById(questionId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "question not found"));
 
         Optional<UserExam> userExam = userExamRepository.findByUserIdAndExamId(authService.getCurrentUser().getId(), question.getExamId());
+
+        userExamService.updateExamProgress(question.getExamId());
 
         userExam.ifPresent(value -> {
             value.setCurrentIndex(question.getIndex());

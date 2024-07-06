@@ -8,6 +8,7 @@ import com.xplained.main.courses.modules.CourseModuleRepository;
 import com.xplained.main.courses.modules.lessons.Lesson;
 import com.xplained.main.courses.modules.lessons.LessonRepository;
 import com.xplained.main.dto.courses.modules.lessons.resources.LessonResourcesRequestBody;
+import com.xplained.main.dto.courses.modules.lessons.resources.LessonResourcesResponse;
 import com.xplained.main.dto.user.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -37,7 +38,7 @@ public class LessonResourcesService {
         if (!courseRepository.existsByIdAndUserId(module.getCourseId(), user.getId())) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "course not found");
     }
 
-    public List<LessonResources> getAllResources(Long lessonId) {
+    public List<LessonResourcesResponse> getAllResources(Long lessonId) {
 
 
         Lesson lesson = lessonRepository.findById(lessonId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "lesson not found"));
@@ -49,7 +50,7 @@ public class LessonResourcesService {
 
         if (enrolledCourseRepository.existsByCourseIdAndUserId(module.getCourseId(), user.getId()) || courseRepository.existsByIdAndUserId(module.getCourseId(), user.getId())) {
 
-            return lessonResourcesRepository.findAllByLessonIdOrderByCreatedAtAsc(lessonId);
+            return lessonResourcesRepository.findAllByLessonIdOrderByCreatedAtAsc(lessonId, authService.getCurrentUser().getId());
         }
 
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "resources not found");

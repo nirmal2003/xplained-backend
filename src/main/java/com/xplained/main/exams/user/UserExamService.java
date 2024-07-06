@@ -1,10 +1,7 @@
 package com.xplained.main.exams.user;
 
 import com.xplained.main.auth.AuthService;
-import com.xplained.main.dto.exams.user.UserExamAdminResponse;
-import com.xplained.main.dto.exams.user.UserExamRequestBody;
-import com.xplained.main.dto.exams.user.UserExamResponse;
-import com.xplained.main.dto.exams.user.UserResults;
+import com.xplained.main.dto.exams.user.*;
 import com.xplained.main.exams.Exam;
 import com.xplained.main.exams.ExamRepository;
 import com.xplained.main.exams.questions.QuestionRepository;
@@ -12,6 +9,7 @@ import com.xplained.main.exams.questions.answers.choices.Choice;
 import com.xplained.main.exams.questions.answers.choices.ChoiceRepository;
 import com.xplained.main.exams.user.answers.UserAnswer;
 import com.xplained.main.exams.user.answers.UserAnswerRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +23,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserExamService {
     private final UserExamRepository userExamRepository;
     private final AuthService authService;
@@ -128,5 +127,27 @@ public class UserExamService {
 
     public List<UserExamAdminResponse> getAllExamsInAdmin(Long examId) {
         return userExamRepository.getAllExamsByAdmin(examId);
+    }
+
+    public ExamResultsResponse getUserExamResults(Long examId) {
+        UserExam userExam = userExamRepository.findByUserIdAndExamId(authService.getCurrentUser().getId(), examId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "exam not found"));
+
+        return ExamResultsResponse.builder()
+                .correct(userAnswerRepository.countByUserExamIdAndIsCorrect(userExam.getId(), true).intValue())
+                .incorrect(userAnswerRepository.countByUserExamIdAndIsCorrect(userExam.getId(), false).intValue())
+                .correctMcq(userAnswerRepository.countByUserExamIdAndIsCorrectAndType(userExam.getId(), true, 1).intValue())
+                .correctText(userAnswerRepository.countByUserExamIdAndIsCorrectAndType(userExam.getId(), true, 2).intValue())
+                .build();
+    }
+
+    public void updateExamProgress(Long examId) {
+        UserExam userExam = userExamRepository.findByUserIdAndExamId(authService.getCurrentUser().getId(), examId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "exam not found"));
+
+        Long questions = questionRepository.countByExamId(examId);
+        Long answers = userAnswerRepository.countByUserExamId(userExam.getId());
+
+        userExam.setProgress((answers.floatValue() / questions.floatValue()) * 100);
+
+        userExamRepository.save(userExam);
     }
 }

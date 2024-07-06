@@ -4,6 +4,7 @@ import com.xplained.main.auth.AuthService;
 import com.xplained.main.dto.sliders.SliderRequestBody;
 import com.xplained.main.dto.user.UserDTO;
 import com.xplained.main.sliders.slides.SlideRepository;
+import com.xplained.main.sliders.slides.SlideService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ import java.util.List;
 public class SliderService {
     private final SliderRepository sliderRepository;
     private final AuthService authService;
-    private final SlideRepository slideRepository;
+    private final SlideService slideService;
 
     public List<Slider> getSliders() {
         UserDTO user = authService.getCurrentUser();
@@ -29,13 +30,15 @@ public class SliderService {
     public Slider createSlider(SliderRequestBody requestBody) {
         UserDTO user = authService.getCurrentUser();
 
-        Slider slider = Slider.builder()
+        Slider slider = sliderRepository.saveAndFlush(Slider.builder()
                 .userId(user.getId())
                 .title(requestBody.getTitle())
                 .image(requestBody.getImage())
-                .build();
+                .build());
 
-        return sliderRepository.saveAndFlush(slider);
+        slideService.createSlide(slider.getId());
+
+        return slider;
     }
 
     public void updateSlider(Long id, SliderRequestBody requestBody) {

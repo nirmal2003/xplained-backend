@@ -1,4 +1,4 @@
-package com.xplained.main.exams.user;
+package com.xplained.main.courses.modules.lessons.progress;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 @Data
@@ -16,15 +15,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table
-public class UserExam {
+public class LessonProgress {
     @Id
     @GeneratedValue
     private Long id;
-    private Long examId;
-    private Long userId;
-    private Integer currentIndex;
-    private BigInteger duration;
-    private Float progress;
+    private Long lessonId;
+    private Long resourceId;
+    private Integer percentage;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp

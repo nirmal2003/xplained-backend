@@ -1,6 +1,7 @@
 package com.xplained.main.courses.modules.lessons.resources;
 
 import com.xplained.main.dto.courses.modules.lessons.resources.LessonResourcesRequestBody;
+import com.xplained.main.dto.courses.modules.lessons.resources.LessonResourcesResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +15,7 @@ public class LessonResourcesController {
 
 
     @GetMapping("/{lessonId}")
-    public List<LessonResources> getAllResources(@PathVariable Long lessonId) {
+    public List<LessonResourcesResponse> getAllResources(@PathVariable Long lessonId) {
         return lessonResourcesService.getAllResources(lessonId);
     }
 
