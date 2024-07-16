@@ -51,7 +51,6 @@ public class ElementService {
 
         requestBody.forEach(element -> {
             elementRepository.save(Element.builder()
-                            .id(element.getId())
                             .slideId(slide.getId())
                             .type(element.getType())
                             .data(element.getData())

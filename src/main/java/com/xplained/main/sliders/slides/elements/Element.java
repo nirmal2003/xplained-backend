@@ -17,9 +17,10 @@ import java.time.LocalDateTime;
 @Table
 public class Element {
     @Id
-    private String id;
+    @GeneratedValue
+    private Long id;
     private Long slideId;
-    private String type;
+    private Integer type;
     private String time;
 
     @Column(columnDefinition = "TEXT")

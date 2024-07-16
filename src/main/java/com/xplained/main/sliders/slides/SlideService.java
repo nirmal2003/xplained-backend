@@ -27,6 +27,10 @@ public class SlideService {
         return slideRepository.findAllBySliderId(sliderId);
     }
 
+    public Slide getSlideByIndex(Long sliderId, Integer index) {
+        return slideRepository.findAllBySliderIdAndIndex(sliderId, index).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "slide not found"));
+    }
+
     public Slide createSlide(Long sliderId) {
         UserDTO user = authService.getCurrentUser();
 

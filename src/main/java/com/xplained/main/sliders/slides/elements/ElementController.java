@@ -18,7 +18,7 @@ public class ElementController {
         return elementService.getElements(slideId);
     }
 
-    @PostMapping("/{slideId}")
+    @PutMapping("/{slideId}")
     public void createSlideElements(@PathVariable Long slideId, @RequestBody List<ElementRequestBody> requestBody) {
         elementService.createSlideElements(slideId, requestBody);
     }

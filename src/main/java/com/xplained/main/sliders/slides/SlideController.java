@@ -17,6 +17,11 @@ public class SlideController {
         return slideService.getSlides(sliderId);
     }
 
+    @GetMapping("/{sliderId}/{index}")
+    public Slide getSlideByIndex(@PathVariable Long sliderId, @PathVariable Integer index) {
+        return slideService.getSlideByIndex(sliderId, index);
+    }
+
     @PostMapping("/{sliderId}")
     public Slide createSlide(@PathVariable Long sliderId) {
         return slideService.createSlide(sliderId);
