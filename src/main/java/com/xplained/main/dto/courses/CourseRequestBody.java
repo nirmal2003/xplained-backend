@@ -13,5 +13,5 @@ public class CourseRequestBody {
     private String learners;
     private Boolean isPrivate;
     private String image;
-    private Long video;
+    private String video;
 }

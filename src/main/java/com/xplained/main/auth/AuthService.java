@@ -6,6 +6,8 @@ import com.xplained.main.dto.auth.RegisterRequest;
 import com.xplained.main.dto.user.UserDTO;
 import com.xplained.main.user.User;
 import com.xplained.main.user.UserRepository;
+import com.xplained.main.user.bio.UserBio;
+import com.xplained.main.user.bio.UserBioRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final UserBioRepository userBioRepository;
 
     public void register(RegisterRequest registerRequest, HttpServletResponse response) {
         Optional<User> user = userRepository.findByEmail(registerRequest.getEmail());
@@ -43,7 +46,11 @@ public class AuthService {
 
         User savedUser = userRepository.saveAndFlush(user1);
 
-        String token = jwtService.generateToken(user1);
+        userBioRepository.save(UserBio.builder()
+                        .userId(savedUser.getId())
+                .build());
+
+        String token = jwtService.generateToken(savedUser);
 
         Cookie cookie = new Cookie("sharp_token", token);
         cookie.setMaxAge(3600 * 24 * 50);

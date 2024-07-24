@@ -48,11 +48,13 @@ public class UserService {
     }
 
     public void updateUser(UserRequestBody requestBody) {
-        UserDTO userDTO = authService.getCurrentUser();
+        UserDTO user = authService.getCurrentUser();
 
-        User user = userRepository.findById(userDTO.getId()).get();
+        UserBio userBio = null;
 
-        UserBio userBio = userBioRepository.findByUserId(user.getId()).get();
+        Optional<UserBio> _userBio = userBioRepository.findByUserId(user.getId());
+
+        userBio = _userBio.orElseGet(() -> userBioRepository.saveAndFlush(UserBio.builder().userId(user.getId()).build()));
 
         if (requestBody.getDescription() != null) userBio.setDescription(requestBody.getDescription());
         if (requestBody.getHeading() != null) userBio.setHeading(requestBody.getHeading());

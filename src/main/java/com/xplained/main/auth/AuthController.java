@@ -2,6 +2,7 @@ package com.xplained.main.auth;
 
 import com.xplained.main.dto.auth.LoginRequest;
 import com.xplained.main.dto.auth.RegisterRequest;
+import com.xplained.main.dto.user.UserDTO;
 import com.xplained.main.dto.user.UserRequestBody;
 import com.xplained.main.user.UserService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,8 +18,13 @@ public class AuthController {
     private final AuthService authService;
 
 
+    @GetMapping
+    public UserDTO getUserDetails() {
+        return authService.getCurrentUser();
+    }
+
     @GetMapping("/email")
-    public Boolean checkUserEmail(@RequestParam("email") String email ) {
+    public Boolean checkUserEmail(@RequestParam("email") String email) {
         return userService.checkUserEmail(email);
     }
 

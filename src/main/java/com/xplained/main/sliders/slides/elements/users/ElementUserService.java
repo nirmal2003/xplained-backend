@@ -23,7 +23,8 @@ public class ElementUserService {
     }
 
     public void updateUserElement(Long elementId, ElementUserRequestBody requestBody) {
-        if (!elementRepository.existsById(elementId)) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Element not found");
+        if (!elementRepository.existsById(elementId))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Element not found");
 
         Optional<ElementUser> element = elementUserRepository.findByElementIdAndUserId(elementId, authService.getCurrentUser().getId());
 

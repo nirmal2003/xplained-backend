@@ -2,6 +2,7 @@ package com.xplained.main.courses.modules;
 
 import com.xplained.main.dto.courses.modules.CourseModuleRequestBody;
 import com.xplained.main.dto.courses.modules.CourseModuleResponse;
+import com.xplained.main.dto.courses.modules.IndexRequestBody;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,11 @@ public class CourseModuleController {
     @PutMapping("/{id}")
     public void updateModule(@PathVariable Long id, @RequestBody CourseModuleRequestBody requestBody) {
         courseModuleService.updateModule(id, requestBody);
+    }
+
+    @PutMapping("/index")
+    public void updateIndex(@RequestBody List<IndexRequestBody> requestBody) {
+        courseModuleService.updateIndex(requestBody);
     }
 
     @DeleteMapping("/{id}")

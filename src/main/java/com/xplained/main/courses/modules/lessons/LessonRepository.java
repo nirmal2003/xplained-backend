@@ -7,7 +7,7 @@ import java.util.List;
 
 @Repository
 public interface LessonRepository extends JpaRepository<Lesson, Long> {
-    List<Lesson> findAllByModuleId(Long moduleId);
+    List<Lesson> findAllByModuleIdOrderByIndexAsc(Long moduleId);
 
     Long countByModuleId(Long moduleId);
 }

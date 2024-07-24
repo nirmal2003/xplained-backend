@@ -2,11 +2,13 @@ package com.xplained.main.courses;
 
 import com.xplained.main.auth.AuthService;
 import com.xplained.main.courses.resources.videos.VideoRepository;
-import com.xplained.main.dto.courses.CourseRequestBody;
-import com.xplained.main.dto.courses.CourseResponse;
-import com.xplained.main.dto.courses.CourseSearchResponse;
+import com.xplained.main.dto.courses.*;
 import com.xplained.main.dto.user.UserDTO;
+import com.xplained.main.user.bio.UserBio;
+import com.xplained.main.user.bio.UserBioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -19,20 +21,57 @@ public class CourseService {
     private final AuthService authService;
     private final CourseRepository courseRepository;
     private final VideoRepository videoRepository;
+    private final UserBioRepository userBioRepository;
 
 
-    public List<CourseResponse> getAllCourses() {
+    public List<CourseResponse> getAllCourses(Integer page) {
         UserDTO user = authService.getCurrentUser();
 
-        return courseRepository.findAllByUserId(user.getId());
+        Pageable pageable = PageRequest.of(page, 15);
+
+        return courseRepository.findAllByUserId(user.getId(), pageable);
     }
 
-    public List<CourseSearchResponse> searchCourses(String title) {
-        return courseRepository.searchCourseByTitle(title.toLowerCase());
+    public List<CourseSearchResponse> searchCourses(String title, Integer page) {
+
+        Pageable pageable = PageRequest.of(page, 15);
+
+        if (title == null || title.isEmpty()) return courseRepository.searchCourseByEmptyTitle(pageable);
+        else return courseRepository.searchCourseByTitle(title.toLowerCase(), pageable);
     }
 
-    public Course getCourseDetails(Long id) {
-        return courseRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "course not found"));
+    public CourseDetailsResponse getCourseDetails(Long id) {
+
+        UserDTO user = authService.getCurrentUser();
+
+        Course course = courseRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "course not found"));
+
+        CourseDetailsResponse response = CourseDetailsResponse.builder()
+                .id(course.getId())
+                .title(course.getTitle())
+                .heading(course.getHeading())
+                .image(course.getImage())
+                .video(course.getVideo())
+                .isPrivate(course.getIsPrivate())
+                .isPublished(course.getIsPublished())
+                .isActive(course.getIsActive())
+                .numberOfLessons(course.getNumberOfLessons())
+                .numberOfModels(course.getNumberOfModels())
+                .createdAt(course.getCreatedAt())
+                .build();
+
+        userBioRepository.findByUserId(user.getId()).ifPresent(value -> {
+            response.setUser(
+                    CourseDetailsResponseUser.builder()
+                    .id(user.getId())
+                    .name(user.getUsername())
+                    .heading(value.getHeading())
+                    .image(value.getImage())
+                    .build()
+            );
+        });
+
+        return response;
     }
 
     public Course createCourse() {
@@ -52,6 +91,8 @@ public class CourseService {
     public void updateCourse(Long id, CourseRequestBody requestBody) {
         UserDTO user = authService.getCurrentUser();
 
+        System.out.println(requestBody);
+
         Course course = courseRepository.findByIdAndUserId(id, user.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "course not found"));
 
         if (requestBody.getTitle() != null) course.setTitle(requestBody.getTitle());
@@ -61,7 +102,8 @@ public class CourseService {
         if (requestBody.getLearners() != null) course.setLearners(requestBody.getLearners());
         if (requestBody.getIsPrivate() != null) course.setIsPrivate(requestBody.getIsPrivate());
 
-        if (requestBody.getVideo() != null && videoRepository.existsById(requestBody.getVideo())) {
+        // Add a condition to find the within our video database
+        if (requestBody.getVideo() != null) {
             course.setVideo(requestBody.getVideo());
         }
 
@@ -78,3 +120,4 @@ public class CourseService {
         courseRepository.delete(course);
     }
 }
+

@@ -17,9 +17,11 @@ public class UserBio {
     @GeneratedValue
     private Long id;
     private Long userId;
-    private String description;
     private String image;
     private String heading;
+
+    @Column(columnDefinition = "TEXT")
+    private String description;
 
     private String linkedin;
     private String youtube;

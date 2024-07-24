@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface CourseModuleRepository extends JpaRepository<CourseModule, Long> {
 
-    @Query("SELECT new com.xplained.main.dto.courses.modules.CourseModuleResponse(m.id, m.name, m.createdAt) FROM CourseModule m WHERE m.courseId = :courseId ORDER BY m.createdAt ASC")
+    @Query("SELECT new com.xplained.main.dto.courses.modules.CourseModuleResponse(m.id, m.name, m.createdAt) FROM CourseModule m WHERE m.courseId = :courseId ORDER BY m.index ASC")
     List<CourseModuleResponse> findAllByCourseId(@Param("courseId") Long courseId, Pageable pageable);
 
     Long countByCourseId(Long courseId);

@@ -4,6 +4,7 @@ import com.xplained.main.auth.AuthService;
 import com.xplained.main.courses.CourseRepository;
 import com.xplained.main.dto.courses.modules.CourseModuleRequestBody;
 import com.xplained.main.dto.courses.modules.CourseModuleResponse;
+import com.xplained.main.dto.courses.modules.IndexRequestBody;
 import com.xplained.main.dto.user.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -61,6 +62,20 @@ public class CourseModuleService {
         if (requestBody.getName() != null) module.setName(requestBody.getName());
 
         courseModuleRepository.save(module);
+    }
+
+
+    // background task
+    public void updateIndex(List<IndexRequestBody> requestBody) {
+        requestBody.forEach(value -> {
+
+            courseModuleRepository.findById(value.getId()).ifPresent(module -> {
+                module.setIndex(value.getIndex());
+
+                courseModuleRepository.save(module);
+            });
+
+        });
     }
 
     public void deleteModule(Long id) {

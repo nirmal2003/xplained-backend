@@ -1,5 +1,6 @@
 package com.xplained.main.courses;
 
+import com.xplained.main.dto.courses.CourseDetailsResponse;
 import com.xplained.main.dto.courses.CourseRequestBody;
 import com.xplained.main.dto.courses.CourseResponse;
 import com.xplained.main.dto.courses.CourseSearchResponse;
@@ -16,17 +17,17 @@ public class CourseController {
 
 
     @GetMapping
-    public List<CourseResponse> getAllCourses() {
-        return courseService.getAllCourses();
+    public List<CourseResponse> getAllCourses(@RequestParam(name = "page", defaultValue = "0", required = false) Integer page) {
+        return courseService.getAllCourses(page);
     }
 
     @GetMapping("/search")
-    public List<CourseSearchResponse> searchCourses(@RequestParam(name = "title", required = true) String title) {
-        return courseService.searchCourses(title);
+    public List<CourseSearchResponse> searchCourses(@RequestParam(name = "title", required = false, defaultValue = "") String title, @RequestParam(name = "page", defaultValue = "0", required = false) Integer page) {
+        return courseService.searchCourses(title, page);
     }
 
     @GetMapping("/{id}")
-    public Course getCourseDetails(@PathVariable Long id) {
+    public CourseDetailsResponse getCourseDetails(@PathVariable Long id) {
         return courseService.getCourseDetails(id);
     }
 

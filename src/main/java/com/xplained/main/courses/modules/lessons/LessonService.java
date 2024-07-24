@@ -4,6 +4,7 @@ import com.xplained.main.auth.AuthService;
 import com.xplained.main.courses.CourseRepository;
 import com.xplained.main.courses.modules.CourseModule;
 import com.xplained.main.courses.modules.CourseModuleRepository;
+import com.xplained.main.dto.courses.modules.IndexRequestBody;
 import com.xplained.main.dto.courses.modules.lessons.LessonRequestBody;
 import com.xplained.main.dto.user.UserDTO;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,7 @@ public class LessonService {
     }
 
     public List<Lesson> getLessons(Long moduleId) {
-        return lessonRepository.findAllByModuleId(moduleId);
+        return lessonRepository.findAllByModuleIdOrderByIndexAsc(moduleId);
     }
 
     public Lesson getLesson(Long id) {
@@ -65,6 +66,19 @@ public class LessonService {
         if (requestBody.getName() != null) lesson.setName(requestBody.getName());
 
         lessonRepository.save(lesson);
+    }
+
+    // background task
+    public void updateIndex(List<IndexRequestBody> requestBody) {
+        requestBody.forEach(value -> {
+
+            lessonRepository.findById(value.getId()).ifPresent(module -> {
+                module.setIndex(value.getIndex());
+
+                lessonRepository.save(module);
+            });
+
+        });
     }
 
     public void deleteLesson(Long id) {
