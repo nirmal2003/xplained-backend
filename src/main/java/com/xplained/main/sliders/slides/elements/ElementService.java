@@ -26,11 +26,11 @@ public class ElementService {
 
     public List<Element> getElements(Long slideId) {
 
-        UserDTO user = authService.getCurrentUser();
+//        UserDTO user = authService.getCurrentUser();
 
         Slide slide = slideRepository.findById(slideId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Slide not found"));
 
-        if (!sliderRepository.existsByIdAndUserId(slide.getSliderId(), user.getId())) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Slider not found");
+        if (!sliderRepository.existsById(slide.getSliderId())) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Slider not found");
 
         return elementRepository.findAllBySlideId(slideId);
     }

@@ -30,6 +30,8 @@ public class QuestionService {
 
     public List<Long> getAllQuestions(Long examId) {
 
+        System.out.println("Exam id " + examId);
+
         Exam exam = examRepository.findById(examId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "exam not found"));
 
         if (exam.getIsTextEnabled()) return questionRepository.findAllByExamId(examId);
@@ -37,17 +39,12 @@ public class QuestionService {
     }
 
     public QuestionResponse getQuestionByIndex(Long questionId) {
-//        UserExam userExam = userExamRepository.findById(userExamId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "exam not found"));
-//
-//        System.out.println("\n");
-//        System.out.println("index " + userExam.getNextIndex());
-//        System.out.println("\n");
-
         Question question = questionRepository.findById(questionId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "question not found"));
+        System.out.println(question);
 
         Optional<UserExam> userExam = userExamRepository.findByUserIdAndExamId(authService.getCurrentUser().getId(), question.getExamId());
 
-        userExamService.updateExamProgress(question.getExamId());
+//            userExamService.updateExamProgress(question.getExamId());
 
         userExam.ifPresent(value -> {
             value.setCurrentIndex(question.getIndex());
@@ -62,6 +59,8 @@ public class QuestionService {
                 .index(question.getRealIndex())
                 .createdAt(question.getCreatedAt())
                 .build();
+
+
     }
 
     public List<Long> getAllQuestionUserSide(Long examId) {

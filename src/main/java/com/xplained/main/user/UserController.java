@@ -26,4 +26,9 @@ public class UserController {
     public void updateUser(@RequestBody UserRequestBody requestBody) {
         userService.updateUser(requestBody);
     }
+
+    @PutMapping("/type")
+    public void setUserType(@RequestBody UserRequestBody requestBody) {
+        userService.setUserType(requestBody);
+    }
 }

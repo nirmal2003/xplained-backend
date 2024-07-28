@@ -45,3 +45,9 @@ question types:
     MULTIPLE CHOICES - 1
     TEXT - 2
     FILES - 3 [don't implemented]
+
+
+user types:
+    STUDENT - 1
+    TEACHER - 2
+    INSTITUTION - 3

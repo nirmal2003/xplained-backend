@@ -85,6 +85,7 @@ public class AuthService {
         User user = (User) authentication.getPrincipal();
         return UserDTO.builder()
                 .id(user.getId())
+                .type(user.getType())
                 .username(user.getName())
                 .email(user.getEmail())
                 .build();

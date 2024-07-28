@@ -13,6 +13,8 @@ public class CourseDetailsResponse {
     private Long id;
     private String title;
     private String heading;
+    private String shortDescription;
+    private String description;
     private String image;
     private String video;
     private Boolean isPrivate;

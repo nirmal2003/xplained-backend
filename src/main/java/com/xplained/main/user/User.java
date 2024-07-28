@@ -33,6 +33,8 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
+    private Integer type;
+
     @Transient
     private UserBio bio;
 

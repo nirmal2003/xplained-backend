@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class CourseResponse {
     private Long id;
     private String title;
+    private String image;
     private Boolean isPrivate;
     private Boolean isPublished;
     private Boolean isActive;

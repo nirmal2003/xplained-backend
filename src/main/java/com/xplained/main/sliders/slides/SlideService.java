@@ -20,9 +20,7 @@ public class SlideService {
     private final AuthService authService;
 
     public List<Slide> getSlides(Long sliderId) {
-        UserDTO user = authService.getCurrentUser();
-
-        if (!sliderRepository.existsByIdAndUserId(sliderId, user.getId())) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Slider not found");
+        if (!sliderRepository.existsById(sliderId)) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Slider not found");
 
         return slideRepository.findAllBySliderId(sliderId);
     }

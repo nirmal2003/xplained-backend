@@ -6,7 +6,9 @@ import com.xplained.main.dto.user.UserRequestBody;
 import com.xplained.main.user.bio.UserBio;
 import com.xplained.main.user.bio.UserBioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -65,5 +67,15 @@ public class UserService {
         if (requestBody.getOtherUrl() != null) userBio.setOtherUrl(requestBody.getOtherUrl());
 
         userBioRepository.save(userBio);
+    }
+
+    public void setUserType(UserRequestBody requestBody) {
+        User user = userRepository.findById(authService.getCurrentUser().getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found"));
+
+        if (user.getType() != null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "You already set the account type");
+
+        user.setType(requestBody.getType());
+
+        userRepository.save(user);
     }
 }

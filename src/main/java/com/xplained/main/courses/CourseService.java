@@ -25,11 +25,16 @@ public class CourseService {
 
 
     public List<CourseResponse> getAllCourses(Integer page) {
-        UserDTO user = authService.getCurrentUser();
+        Pageable pageable = PageRequest.of(page, 15);
+
+        return courseRepository.findAllByUserId(authService.getCurrentUser().getId(), pageable);
+    }
+
+    public List<CourseSearchResponse> getRecommendedCourses(Integer page) {
 
         Pageable pageable = PageRequest.of(page, 15);
 
-        return courseRepository.findAllByUserId(user.getId(), pageable);
+        return courseRepository.findAllRecommendedCourses(pageable);
     }
 
     public List<CourseSearchResponse> searchCourses(String title, Integer page) {
@@ -50,6 +55,8 @@ public class CourseService {
                 .id(course.getId())
                 .title(course.getTitle())
                 .heading(course.getHeading())
+                .shortDescription(course.getShortDescription())
+                .description(course.getDescription())
                 .image(course.getImage())
                 .video(course.getVideo())
                 .isPrivate(course.getIsPrivate())

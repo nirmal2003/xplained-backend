@@ -14,7 +14,7 @@ import java.util.Optional;
 @Repository
 public interface CourseRepository extends JpaRepository<Course, Long> {
 
-    @Query("SELECT new com.xplained.main.dto.courses.CourseResponse(c.id, c.title, c.isPrivate, c.isPublished, c.isActive) FROM Course c WHERE c.userId = :userId ORDER BY c.createdAt")
+    @Query("SELECT new com.xplained.main.dto.courses.CourseResponse(c.id, c.title, c.image, c.isPrivate, c.isPublished, c.isActive) FROM Course c WHERE c.userId = :userId ORDER BY c.createdAt")
     List<CourseResponse> findAllByUserId(@Param("userId") Long userId, Pageable pageable);
 
     @Query("SELECT new com.xplained.main.dto.courses.CourseSearchResponse(c.id, c.title, c.image) FROM Course c WHERE LOWER(c.title) LIKE %:title% ORDER BY c.createdAt")
@@ -22,6 +22,9 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
     @Query("SELECT new com.xplained.main.dto.courses.CourseSearchResponse(c.id, c.title, c.image) FROM Course c ORDER BY c.createdAt ASC")
     List<CourseSearchResponse> searchCourseByEmptyTitle(Pageable pageable);
+
+    @Query("SELECT new com.xplained.main.dto.courses.CourseSearchResponse(c.id, c.title, c.image) FROM Course c ORDER BY c.createdAt ASC")
+    List<CourseSearchResponse> findAllRecommendedCourses(Pageable pageable);
 
     Optional<Course> findByIdAndUserId(Long id, Long userId);
 

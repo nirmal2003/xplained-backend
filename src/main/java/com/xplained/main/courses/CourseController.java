@@ -21,6 +21,11 @@ public class CourseController {
         return courseService.getAllCourses(page);
     }
 
+    @GetMapping("/recommended")
+    public List<CourseSearchResponse> getRecommendedCourses(@RequestParam(name = "page", defaultValue = "0", required = false) Integer page) {
+        return courseService.getRecommendedCourses(page);
+    }
+
     @GetMapping("/search")
     public List<CourseSearchResponse> searchCourses(@RequestParam(name = "title", required = false, defaultValue = "") String title, @RequestParam(name = "page", defaultValue = "0", required = false) Integer page) {
         return courseService.searchCourses(title, page);

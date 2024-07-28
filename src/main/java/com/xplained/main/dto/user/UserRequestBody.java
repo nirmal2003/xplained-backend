@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class UserRequestBody {
+    private Integer type;
     private String image;
     private String name;
     private String description;
