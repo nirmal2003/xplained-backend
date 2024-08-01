@@ -19,8 +19,8 @@ public class SliderController {
     }
 
     @PostMapping
-    public Slider createSlider(@RequestBody SliderRequestBody requestBody) {
-        return sliderService.createSlider(requestBody);
+    public Slider createSlider() {
+        return sliderService.createSlider();
     }
 
     @PutMapping("/{id}")

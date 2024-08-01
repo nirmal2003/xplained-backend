@@ -1,4 +1,4 @@
-package com.xplained.main.courses.modules.lessons;
+package com.xplained.main.courses.enrolled.progress;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,16 +15,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table
-public class Lesson {
+public class LessonProgress {
     @Id
     @GeneratedValue
     private Long id;
-    private Long moduleId;
-    private String name;
-    private Integer index;
-
-    @Transient
-    private Float completedPercentage;
+    private Long userId;
+    private Long lessonId;
+    private Float percentage;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp

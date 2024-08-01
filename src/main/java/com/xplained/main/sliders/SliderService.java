@@ -27,13 +27,13 @@ public class SliderService {
         return sliderRepository.findAllByUserId(user.getId());
     }
 
-    public Slider createSlider(SliderRequestBody requestBody) {
+    public Slider createSlider() {
         UserDTO user = authService.getCurrentUser();
 
         Slider slider = sliderRepository.saveAndFlush(Slider.builder()
                 .userId(user.getId())
-                .title(requestBody.getTitle())
-                .image(requestBody.getImage())
+                .title("Untitled " + sliderRepository.countByUserId(user.getId()))
+                .image("")
                 .build());
 
         slideService.createSlide(slider.getId());

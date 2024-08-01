@@ -31,7 +31,7 @@ public class LessonService {
     }
 
     public List<Lesson> getLessons(Long moduleId) {
-        return lessonRepository.findAllByModuleIdOrderByIndexAsc(moduleId);
+        return lessonRepository.findAllByModuleIdOrderByIndexAsc(moduleId, authService.getCurrentUser().getId());
     }
 
     public Lesson getLesson(Long id) {

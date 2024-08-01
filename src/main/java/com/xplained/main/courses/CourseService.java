@@ -32,7 +32,7 @@ public class CourseService {
 
     public List<CourseSearchResponse> getRecommendedCourses(Integer page) {
 
-        Pageable pageable = PageRequest.of(page, 15);
+        Pageable pageable = PageRequest.of(page, 5);
 
         return courseRepository.findAllRecommendedCourses(pageable);
     }

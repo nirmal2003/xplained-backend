@@ -13,14 +13,14 @@ public class EnrolledCourseController {
     private final EnrolledCourseService enrolledCourseService;
 
 
-    @GetMapping("/{courseId}")
-    public Boolean isCourseEnrolled(@PathVariable Long courseId) {
-        return enrolledCourseService.isCourseEnrolled(courseId);
-    }
-
     @GetMapping
     public List<EnrolledCourseResponse> getEnrolledCourses() {
         return enrolledCourseService.getEnrolledCourses();
+    }
+
+    @GetMapping("/{courseId}")
+    public Boolean isCourseEnrolled(@PathVariable Long courseId) {
+        return enrolledCourseService.isCourseEnrolled(courseId);
     }
 
     @PostMapping("/{courseId}")

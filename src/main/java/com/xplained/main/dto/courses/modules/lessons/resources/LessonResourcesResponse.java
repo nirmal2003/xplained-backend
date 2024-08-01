@@ -13,12 +13,14 @@ public class LessonResourcesResponse {
     private Integer type;
     private String name;
     private Float progress;
+    private Boolean isCompleted;
 
-    public LessonResourcesResponse(Long id, Integer type, String name, String progress, LocalDateTime createdAt) {
+    public LessonResourcesResponse(Long id, Integer type, String name, String progress, Boolean isCompleted, LocalDateTime createdAt) {
         this.id = id;
         this.type = type;
         this.name = name;
         this.progress = Float.parseFloat(progress);
+        this.isCompleted = isCompleted;
         this.createdAt = createdAt;
     }
 
